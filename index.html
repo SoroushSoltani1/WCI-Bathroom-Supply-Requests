@@ -1,0 +1,28 @@
+<script>
+  function checkOther() {
+    var select = document.getElementById("itemSelect");
+    var otherBox = document.getElementById("otherItem");
+
+    if (select.value === "Other") {
+      otherBox.style.display = "block";
+    } else {
+      otherBox.style.display = "none";
+    }
+  }
+
+  function handleSubmit() {
+    var select = document.getElementById("itemSelect");
+    var otherBox = document.getElementById("otherItem");
+
+    if (select.value === "Other" && otherBox.value.trim() !== "") {
+      select.value = otherBox.value;
+    }
+
+    document.getElementById("successMessage").style.display = "block";
+    
+    setTimeout(function() {
+      document.querySelector("form").reset();
+      document.getElementById("otherItem").style.display = "none";
+    }, 500);
+  }
+</script>
