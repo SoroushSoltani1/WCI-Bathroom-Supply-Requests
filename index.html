@@ -1,28 +1,151 @@
-<script>
-  function checkOther() {
-    var select = document.getElementById("itemSelect");
-    var otherBox = document.getElementById("otherItem");
+<!DOCTYPE html>
+<html>
 
-    if (select.value === "Other") {
-      otherBox.style.display = "block";
-    } else {
-      otherBox.style.display = "none";
-    }
-  }
+<head>
+  <title>Supply Request</title>
 
-  function handleSubmit() {
-    var select = document.getElementById("itemSelect");
-    var otherBox = document.getElementById("otherItem");
-
-    if (select.value === "Other" && otherBox.value.trim() !== "") {
-      select.value = otherBox.value;
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #f7f7f7;
+      margin: 40px;
     }
 
-    document.getElementById("successMessage").style.display = "block";
-    
-    setTimeout(function() {
-      document.querySelector("form").reset();
-      document.getElementById("otherItem").style.display = "none";
-    }, 500);
-  }
-</script>
+    .container {
+      max-width: 320px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      font-size: 13px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 15px;
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #otherItem {
+      display: none;
+    }
+
+    #successMessage {
+      display: none;
+      margin-top: 10px;
+      padding: 8px;
+      background-color: #d4edda;
+      color: #155724;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Report Supplies</h1>
+
+    <form 
+      action="https://docs.google.com/forms/d/e/1FAIpQLSc9Ou3HIOlln2gQSxu2yRY2KmMrPynYYKKv4CU7WjEpqfUBzg/formResponse"
+      method="POST"
+      target="hidden_iframe"
+      onsubmit="handleSubmit()"
+    >
+
+      <!-- Item -->
+      <label>Item</label>
+      <select name="entry.1406252316" id="itemSelect" onchange="checkOther()">
+        <option>Soap</option>
+        <option>Toilet Paper</option>
+        <option>Paper Towel</option>
+        <option>Pads</option>
+        <option>Tampons</option>
+        <option>Other</option>
+      </select>
+
+      <!-- Other input -->
+      <input type="text" id="otherItem" placeholder="Type item here">
+
+      <!-- Bathroom -->
+      <label>Bathroom Type</label>
+      <select name="entry.632713553">
+        <option>Male</option>
+        <option>Female</option>
+        <option>Gender Neutral</option>
+      </select>
+
+      <!-- Location -->
+      <label>Location</label>
+      <input type="text" name="entry.1849314937" placeholder="e.g. Floor 1">
+
+      <!-- Status -->
+      <label>Status</label>
+      <select name="entry.491903196">
+        <option>Out</option>
+        <option>Low</option>
+      </select>
+
+      <button type="submit">Submit</button>
+
+    </form>
+
+    <div id="successMessage">
+      ✅ Request submitted
+    </div>
+
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+  </div>
+
+  <script>
+    function checkOther() {
+      var select = document.getElementById("itemSelect");
+      var otherBox = document.getElementById("otherItem");
+
+      if (select.value === "Other") {
+        otherBox.style.display = "block";
+      } else {
+        otherBox.style.display = "none";
+      }
+    }
+
+    function handleSubmit() {
+      var select = document.getElementById("itemSelect");
+      var otherBox = document.getElementById("otherItem");
+
+      if (select.value === "Other" && otherBox.value.trim() !== "") {
+        select.value = otherBox.value;
+      }
+
+      document.getElementById("successMessage").style.display = "block";
+
+      setTimeout(function() {
+        document.querySelector("form").reset();
+        document.getElementById("otherItem").style.display = "none";
+      }, 500);
+    }
+  </script>
+
+</body>
+
+</html>
