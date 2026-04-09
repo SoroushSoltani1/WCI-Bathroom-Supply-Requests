@@ -66,21 +66,22 @@
     <h1>Report Supplies</h1>
 
     <form 
+      id="form"
       action="https://docs.google.com/forms/d/e/1FAIpQLSc9Ou3HIOlln2gQSxu2yRY2KmMrPynYYKKv4CU7WjEpqfUBzg/formResponse"
       method="POST"
       target="hidden_iframe"
-      onsubmit="handleSubmit()"
+      onsubmit="return handleSubmit()"
     >
 
       <!-- Item -->
       <label>Item</label>
       <select name="entry.1406252316" id="itemSelect" onchange="checkOther()">
-        <option>Soap</option>
-        <option>Toilet Paper</option>
-        <option>Paper Towel</option>
-        <option>Pads</option>
-        <option>Tampons</option>
-        <option>Other</option>
+        <option value="Soap">Soap</option>
+        <option value="Toilet Paper">Toilet Paper</option>
+        <option value="Paper Towel">Paper Towel</option>
+        <option value="Pads">Pads</option>
+        <option value="Tampons">Tampons</option>
+        <option value="Other">Other</option>
       </select>
 
       <!-- Other input -->
@@ -89,9 +90,9 @@
       <!-- Bathroom -->
       <label>Bathroom Type</label>
       <select name="entry.632713553">
-        <option>Male</option>
-        <option>Female</option>
-        <option>Gender Neutral</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Gender Neutral">Gender Neutral</option>
       </select>
 
       <!-- Location -->
@@ -101,8 +102,8 @@
       <!-- Status -->
       <label>Status</label>
       <select name="entry.491903196">
-        <option>Out</option>
-        <option>Low</option>
+        <option value="Out">Out</option>
+        <option value="Low">Low</option>
       </select>
 
       <button type="submit">Submit</button>
@@ -110,7 +111,7 @@
     </form>
 
     <div id="successMessage">
-      ✅ Request submitted
+      ✅ Request submitted successfully
     </div>
 
     <iframe name="hidden_iframe" style="display:none;"></iframe>
@@ -133,16 +134,25 @@
       var select = document.getElementById("itemSelect");
       var otherBox = document.getElementById("otherItem");
 
-      if (select.value === "Other" && otherBox.value.trim() !== "") {
+      // Replace "Other" with custom input
+      if (select.value === "Other") {
+        if (otherBox.value.trim() === "") {
+          alert("Please type the item name.");
+          return false; // stop submission
+        }
         select.value = otherBox.value;
       }
 
+      // Show success message
       document.getElementById("successMessage").style.display = "block";
 
+      // Reset after short delay
       setTimeout(function() {
-        document.querySelector("form").reset();
+        document.getElementById("form").reset();
         document.getElementById("otherItem").style.display = "none";
-      }, 500);
+      }, 800);
+
+      return true; // allow submission
     }
   </script>
 
