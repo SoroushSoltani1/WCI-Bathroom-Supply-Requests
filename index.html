@@ -3,6 +3,7 @@
 
 <head>
   <title>Supply Request</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -26,43 +27,28 @@
       font-size: 13px;
     }
 
-    /* THE TRUE ALIGNMENT FIX */
     select,
-    input[type="text"] {
+    input[type="text"],
+    button {
       width: 100%;
       box-sizing: border-box;
-      padding: 6px;
+      height: 32px;
+      padding: 6px 10px;
       margin-top: 4px;
       font-size: 13px;
       border: 1px solid #000;
       border-radius: 0;
       background-color: #fff;
       color: #000;
-      height: 32px;               /* Force a matching, predictable layout block height */
-      -webkit-appearance: none;   /* Strips default Safari/Chrome element scaling rules */
-      -moz-appearance: none;      /* Strips Firefox scaling overrides */
-      appearance: none;           /* Forces identical border line calculations */
+      font-family: Arial, sans-serif;
     }
 
-    /* Style dropdowns with a clean custom down arrow since appearance:none removes it */
     select {
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 8px center;
-      background-size: 12px;
-      padding-right: 24px;       /* Ensure text doesn't run into the custom arrow layout */
+      appearance: auto;
     }
 
     button {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 6px;
-      margin-top: 10px;
-      font-size: 13px;
-      border: 1px solid #000;
-      border-radius: 0;
-      background-color: #fff;
-      color: #000;
+      margin-top: 12px;
       cursor: pointer;
     }
 
@@ -87,7 +73,7 @@
 
     <h1>Report Supplies</h1>
 
-    <form 
+    <form
       id="form"
       action="https://google.com"
       method="POST"
@@ -95,9 +81,13 @@
       onsubmit="return handleSubmit()"
     >
 
-      <!-- Item -->
       <label>Item</label>
-      <select name="entry.1406252316" id="itemSelect" onchange="checkOther()">
+
+      <select
+        name="entry.1406252316"
+        id="itemSelect"
+        onchange="checkOther()"
+      >
         <option value="Soap">Soap</option>
         <option value="Toilet Paper">Toilet Paper</option>
         <option value="Paper Towel">Paper Towel</option>
@@ -106,23 +96,30 @@
         <option value="Other">Other</option>
       </select>
 
-      <!-- Other input -->
-      <input type="text" id="otherItem" placeholder="Type item here">
+      <input
+        type="text"
+        id="otherItem"
+        placeholder="Type item here"
+      >
 
-      <!-- Bathroom -->
       <label>Bathroom Type</label>
+
       <select name="entry.632713553">
         <option value="Male">Male</option>
         <option value="Female">Female</option>
         <option value="Gender Neutral">Gender Neutral</option>
       </select>
 
-      <!-- Location -->
       <label>Location</label>
-      <input type="text" name="entry.1849314937" placeholder="e.g. Floor 1">
 
-      <!-- Status -->
+      <input
+        type="text"
+        name="entry.1849314937"
+        placeholder="e.g. Floor 1"
+      >
+
       <label>Status</label>
+
       <select name="entry.491903196">
         <option value="Out">Out</option>
         <option value="Low">Low</option>
@@ -136,7 +133,10 @@
       Request submitted successfully
     </div>
 
-    <iframe name="hidden_iframe" style="display:none;"></iframe>
+    <iframe
+      name="hidden_iframe"
+      style="display:none;"
+    ></iframe>
 
   </div>
 
@@ -144,7 +144,12 @@
     function checkOther() {
       var select = document.getElementById("itemSelect");
       var otherBox = document.getElementById("otherItem");
-      otherBox.style.display = (select.value === "Other") ? "block" : "none";
+
+      if (select.value === "Other") {
+        otherBox.style.display = "block";
+      } else {
+        otherBox.style.display = "none";
+      }
     }
 
     function handleSubmit() {
@@ -152,16 +157,18 @@
       var otherBox = document.getElementById("otherItem");
 
       if (select.value === "Other") {
+
         if (otherBox.value.trim() === "") {
           alert("Please type the item name.");
           return false;
         }
+
         select.value = otherBox.value;
       }
 
       document.getElementById("successMessage").style.display = "block";
 
-      setTimeout(function() {
+      setTimeout(function () {
         document.getElementById("form").reset();
         document.getElementById("otherItem").style.display = "none";
       }, 800);
