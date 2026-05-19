@@ -3,6 +3,7 @@
 
 <head>
   <title>Supply Request</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -26,9 +27,8 @@
       font-size: 13px;
     }
 
-    select,
-    input,
-    button {
+    /* unified input style */
+    .form-input {
       width: 100%;
       padding: 6px;
       margin-top: 4px;
@@ -37,10 +37,17 @@
       border-radius: 0;
       background-color: #fff;
       color: #000;
+      box-sizing: border-box;
     }
 
     button {
+      width: 100%;
+      padding: 6px;
       margin-top: 10px;
+      font-size: 13px;
+      border: 1px solid #000;
+      border-radius: 0;
+      background-color: #fff;
       cursor: pointer;
     }
 
@@ -53,7 +60,6 @@
       margin-top: 10px;
       padding: 6px;
       background-color: #e0e0e0;
-      color: #000;
       font-size: 13px;
     }
   </style>
@@ -75,7 +81,7 @@
 
       <!-- Item -->
       <label>Item</label>
-      <select name="entry.1406252316" id="itemSelect" onchange="checkOther()">
+      <select name="entry.1406252316" id="itemSelect" class="form-input" onchange="checkOther()">
         <option value="Soap">Soap</option>
         <option value="Toilet Paper">Toilet Paper</option>
         <option value="Paper Towel">Paper Towel</option>
@@ -85,11 +91,16 @@
       </select>
 
       <!-- Other input -->
-      <input type="text" id="otherItem" placeholder="Type item here">
+      <input 
+        type="text" 
+        id="otherItem" 
+        class="form-input"
+        placeholder="Type item here"
+      >
 
       <!-- Bathroom -->
       <label>Bathroom Type</label>
-      <select name="entry.632713553">
+      <select name="entry.632713553" class="form-input">
         <option value="Male">Male</option>
         <option value="Female">Female</option>
         <option value="Gender Neutral">Gender Neutral</option>
@@ -97,11 +108,16 @@
 
       <!-- Location -->
       <label>Location</label>
-      <input type="text" name="entry.1849314937" placeholder="e.g. Floor 1">
+      <input 
+        type="text" 
+        name="entry.1849314937" 
+        class="form-input"
+        placeholder="e.g. Floor 1"
+      >
 
       <!-- Status -->
       <label>Status</label>
-      <select name="entry.491903196">
+      <select name="entry.491903196" class="form-input">
         <option value="Out">Out</option>
         <option value="Low">Low</option>
       </select>
@@ -122,7 +138,12 @@
     function checkOther() {
       var select = document.getElementById("itemSelect");
       var otherBox = document.getElementById("otherItem");
-      otherBox.style.display = (select.value === "Other") ? "block" : "none";
+
+      if (select.value === "Other") {
+        otherBox.style.display = "block";
+      } else {
+        otherBox.style.display = "none";
+      }
     }
 
     function handleSubmit() {
@@ -139,7 +160,7 @@
 
       document.getElementById("successMessage").style.display = "block";
 
-      setTimeout(function() {
+      setTimeout(function () {
         document.getElementById("form").reset();
         document.getElementById("otherItem").style.display = "none";
       }, 800);
@@ -149,5 +170,4 @@
   </script>
 
 </body>
-
 </html>
