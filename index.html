@@ -27,17 +27,14 @@
       font-size: 13px;
     }
 
-    /* unified input style */
     .form-input {
       width: 100%;
       padding: 6px;
       margin-top: 4px;
       font-size: 13px;
       border: 1px solid #000;
-      border-radius: 0;
-      background-color: #fff;
-      color: #000;
       box-sizing: border-box;
+      background: #fff;
     }
 
     button {
@@ -46,12 +43,11 @@
       margin-top: 10px;
       font-size: 13px;
       border: 1px solid #000;
-      border-radius: 0;
-      background-color: #fff;
+      background: #fff;
       cursor: pointer;
     }
 
-    #otherItem {
+    #otherWrapper {
       display: none;
     }
 
@@ -67,107 +63,94 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <h1>Report Supplies</h1>
+  <h1>Report Supplies</h1>
 
-    <form 
-      id="form"
-      action="https://docs.google.com/forms/d/e/1FAIpQLSc9Ou3HIOlln2gQSxu2yRY2KmMrPynYYKKv4CU7WjEpqfUBzg/formResponse"
-      method="POST"
-      target="hidden_iframe"
-      onsubmit="return handleSubmit()"
-    >
+  <form 
+    id="form"
+    action="https://docs.google.com/forms/d/e/1FAIpQLSc9Ou3HIOlln2gQSxu2yRY2KmMrPynYYKKv4CU7WjEpqfUBzg/formResponse"
+    method="POST"
+    target="hidden_iframe"
+    onsubmit="return handleSubmit()"
+  >
 
-      <!-- Item -->
-      <label>Item</label>
-      <select name="entry.1406252316" id="itemSelect" class="form-input" onchange="checkOther()">
-        <option value="Soap">Soap</option>
-        <option value="Toilet Paper">Toilet Paper</option>
-        <option value="Paper Towel">Paper Towel</option>
-        <option value="Pads">Pads</option>
-        <option value="Tampons">Tampons</option>
-        <option value="Other">Other</option>
-      </select>
+    <!-- Item -->
+    <label>Item</label>
+    <select name="entry.1406252316" id="itemSelect" class="form-input" onchange="checkOther()">
+      <option value="Soap">Soap</option>
+      <option value="Toilet Paper">Toilet Paper</option>
+      <option value="Paper Towel">Paper Towel</option>
+      <option value="Pads">Pads</option>
+      <option value="Tampons">Tampons</option>
+      <option value="Other">Other</option>
+    </select>
 
-      <!-- Other input -->
-      <input 
-        type="text" 
-        id="otherItem" 
-        class="form-input"
-        placeholder="Type item here"
-      >
-
-      <!-- Bathroom -->
-      <label>Bathroom Type</label>
-      <select name="entry.632713553" class="form-input">
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Gender Neutral">Gender Neutral</option>
-      </select>
-
-      <!-- Location -->
-      <label>Location</label>
-      <input 
-        type="text" 
-        name="entry.1849314937" 
-        class="form-input"
-        placeholder="e.g. Floor 1"
-      >
-
-      <!-- Status -->
-      <label>Status</label>
-      <select name="entry.491903196" class="form-input">
-        <option value="Out">Out</option>
-        <option value="Low">Low</option>
-      </select>
-
-      <button type="submit">Submit</button>
-
-    </form>
-
-    <div id="successMessage">
-      Request submitted successfully
+    <!-- Other (wrapped properly) -->
+    <div id="otherWrapper">
+      <label>Other Item</label>
+      <input type="text" id="otherItem" class="form-input" placeholder="Type item here">
     </div>
 
-    <iframe name="hidden_iframe" style="display:none;"></iframe>
+    <!-- Bathroom -->
+    <label>Bathroom Type</label>
+    <select name="entry.632713553" class="form-input">
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Gender Neutral">Gender Neutral</option>
+    </select>
 
-  </div>
+    <!-- Location -->
+    <label>Location</label>
+    <input type="text" name="entry.1849314937" class="form-input" placeholder="e.g. Floor 1">
 
-  <script>
-    function checkOther() {
-      var select = document.getElementById("itemSelect");
-      var otherBox = document.getElementById("otherItem");
+    <!-- Status -->
+    <label>Status</label>
+    <select name="entry.491903196" class="form-input">
+      <option value="Out">Out</option>
+      <option value="Low">Low</option>
+    </select>
 
-      if (select.value === "Other") {
-        otherBox.style.display = "block";
-      } else {
-        otherBox.style.display = "none";
+    <button type="submit">Submit</button>
+
+  </form>
+
+  <div id="successMessage">Request submitted successfully</div>
+
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+</div>
+
+<script>
+  function checkOther() {
+    var select = document.getElementById("itemSelect");
+    var wrapper = document.getElementById("otherWrapper");
+
+    wrapper.style.display = (select.value === "Other") ? "block" : "none";
+  }
+
+  function handleSubmit() {
+    var select = document.getElementById("itemSelect");
+    var otherBox = document.getElementById("otherItem");
+
+    if (select.value === "Other") {
+      if (otherBox.value.trim() === "") {
+        alert("Please type the item name.");
+        return false;
       }
+      select.value = otherBox.value;
     }
 
-    function handleSubmit() {
-      var select = document.getElementById("itemSelect");
-      var otherBox = document.getElementById("otherItem");
+    document.getElementById("successMessage").style.display = "block";
 
-      if (select.value === "Other") {
-        if (otherBox.value.trim() === "") {
-          alert("Please type the item name.");
-          return false;
-        }
-        select.value = otherBox.value;
-      }
+    setTimeout(function () {
+      document.getElementById("form").reset();
+      document.getElementById("otherWrapper").style.display = "none";
+    }, 800);
 
-      document.getElementById("successMessage").style.display = "block";
-
-      setTimeout(function () {
-        document.getElementById("form").reset();
-        document.getElementById("otherItem").style.display = "none";
-      }, 800);
-
-      return true;
-    }
-  </script>
+    return true;
+  }
+</script>
 
 </body>
 </html>
