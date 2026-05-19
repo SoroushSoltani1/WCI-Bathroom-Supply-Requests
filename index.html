@@ -7,8 +7,8 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #ffffff;
       margin: 40px;
-      background: #fff;
     }
 
     .container {
@@ -27,19 +27,23 @@
       font-size: 13px;
     }
 
-    input, select, button {
+    select,
+    input,
+    button {
       width: 100%;
-      box-sizing: border-box;
       padding: 6px;
       margin-top: 4px;
       font-size: 13px;
       border: 1px solid #000;
-      background: #fff;
+      border-radius: 0;
+      background-color: #fff;
+      color: #000;
+      box-sizing: border-box;
     }
 
     button {
-      cursor: pointer;
       margin-top: 10px;
+      cursor: pointer;
     }
 
     #otherItem {
@@ -50,7 +54,7 @@
       display: none;
       margin-top: 10px;
       padding: 6px;
-      background: #e0e0e0;
+      background-color: #e0e0e0;
       font-size: 13px;
     }
   </style>
@@ -73,6 +77,7 @@
     <!-- Item -->
     <label>Item</label>
     <select name="entry.1406252316" id="itemSelect" onchange="checkOther()">
+      <option value="">Select item</option>
       <option value="Soap">Soap</option>
       <option value="Toilet Paper">Toilet Paper</option>
       <option value="Paper Towel">Paper Towel</option>
@@ -86,7 +91,8 @@
 
     <!-- Bathroom -->
     <label>Bathroom Type</label>
-    <select name="entry.632713553">
+    <select name="entry.632713553" id="bathroom">
+      <option value="">Select</option>
       <option value="Male">Male</option>
       <option value="Female">Female</option>
       <option value="Gender Neutral">Gender Neutral</option>
@@ -94,11 +100,12 @@
 
     <!-- Location -->
     <label>Location</label>
-    <input type="text" name="entry.1849314937" placeholder="e.g. Floor 1">
+    <input type="text" name="entry.1849314937" id="location" placeholder="e.g. Floor 1">
 
     <!-- Status -->
     <label>Status</label>
-    <select name="entry.491903196">
+    <select name="entry.491903196" id="status">
+      <option value="">Select</option>
       <option value="Out">Out</option>
       <option value="Low">Low</option>
     </select>
@@ -126,17 +133,46 @@
   }
 
   function handleSubmit() {
-    const select = document.getElementById("itemSelect");
+    const item = document.getElementById("itemSelect");
     const other = document.getElementById("otherItem");
+    const bathroom = document.getElementById("bathroom");
+    const location = document.getElementById("location");
+    const status = document.getElementById("status");
 
-    if (select.value === "Other") {
+    // ITEM check
+    if (!item.value) {
+      alert("Please select an item.");
+      return false;
+    }
+
+    // OTHER check
+    if (item.value === "Other") {
       if (other.value.trim() === "") {
         alert("Please type the item name.");
         return false;
       }
-      select.value = other.value;
+      item.value = other.value;
     }
 
+    // BATHROOM check
+    if (!bathroom.value) {
+      alert("Please select bathroom type.");
+      return false;
+    }
+
+    // LOCATION check
+    if (location.value.trim() === "") {
+      alert("Please enter a location.");
+      return false;
+    }
+
+    // STATUS check
+    if (!status.value) {
+      alert("Please select status.");
+      return false;
+    }
+
+    // SUCCESS
     document.getElementById("successMessage").style.display = "block";
 
     setTimeout(() => {
