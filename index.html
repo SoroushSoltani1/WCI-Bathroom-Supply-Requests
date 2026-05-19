@@ -7,8 +7,8 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #ffffff;
       margin: 40px;
+      background: #fff;
     }
 
     .container {
@@ -27,27 +27,22 @@
       font-size: 13px;
     }
 
-    .form-input {
+    input, select, button {
       width: 100%;
+      box-sizing: border-box;
       padding: 6px;
       margin-top: 4px;
       font-size: 13px;
       border: 1px solid #000;
-      box-sizing: border-box;
       background: #fff;
     }
 
     button {
-      width: 100%;
-      padding: 6px;
-      margin-top: 10px;
-      font-size: 13px;
-      border: 1px solid #000;
-      background: #fff;
       cursor: pointer;
+      margin-top: 10px;
     }
 
-    #otherWrapper {
+    #otherItem {
       display: none;
     }
 
@@ -55,7 +50,7 @@
       display: none;
       margin-top: 10px;
       padding: 6px;
-      background-color: #e0e0e0;
+      background: #e0e0e0;
       font-size: 13px;
     }
   </style>
@@ -77,7 +72,7 @@
 
     <!-- Item -->
     <label>Item</label>
-    <select name="entry.1406252316" id="itemSelect" class="form-input" onchange="checkOther()">
+    <select name="entry.1406252316" id="itemSelect" onchange="checkOther()">
       <option value="Soap">Soap</option>
       <option value="Toilet Paper">Toilet Paper</option>
       <option value="Paper Towel">Paper Towel</option>
@@ -86,15 +81,12 @@
       <option value="Other">Other</option>
     </select>
 
-    <!-- Other (wrapped properly) -->
-    <div id="otherWrapper">
-      <label>Other Item</label>
-      <input type="text" id="otherItem" class="form-input" placeholder="Type item here">
-    </div>
+    <!-- Other -->
+    <input type="text" id="otherItem" placeholder="Type item here">
 
     <!-- Bathroom -->
     <label>Bathroom Type</label>
-    <select name="entry.632713553" class="form-input">
+    <select name="entry.632713553">
       <option value="Male">Male</option>
       <option value="Female">Female</option>
       <option value="Gender Neutral">Gender Neutral</option>
@@ -102,11 +94,11 @@
 
     <!-- Location -->
     <label>Location</label>
-    <input type="text" name="entry.1849314937" class="form-input" placeholder="e.g. Floor 1">
+    <input type="text" name="entry.1849314937" placeholder="e.g. Floor 1">
 
     <!-- Status -->
     <label>Status</label>
-    <select name="entry.491903196" class="form-input">
+    <select name="entry.491903196">
       <option value="Out">Out</option>
       <option value="Low">Low</option>
     </select>
@@ -123,29 +115,33 @@
 
 <script>
   function checkOther() {
-    var select = document.getElementById("itemSelect");
-    var wrapper = document.getElementById("otherWrapper");
+    const select = document.getElementById("itemSelect");
+    const other = document.getElementById("otherItem");
 
-    wrapper.style.display = (select.value === "Other") ? "block" : "none";
+    if (select.value === "Other") {
+      other.style.display = "block";
+    } else {
+      other.style.display = "none";
+    }
   }
 
   function handleSubmit() {
-    var select = document.getElementById("itemSelect");
-    var otherBox = document.getElementById("otherItem");
+    const select = document.getElementById("itemSelect");
+    const other = document.getElementById("otherItem");
 
     if (select.value === "Other") {
-      if (otherBox.value.trim() === "") {
+      if (other.value.trim() === "") {
         alert("Please type the item name.");
         return false;
       }
-      select.value = otherBox.value;
+      select.value = other.value;
     }
 
     document.getElementById("successMessage").style.display = "block";
 
-    setTimeout(function () {
+    setTimeout(() => {
       document.getElementById("form").reset();
-      document.getElementById("otherWrapper").style.display = "none";
+      document.getElementById("otherItem").style.display = "none";
     }, 800);
 
     return true;
