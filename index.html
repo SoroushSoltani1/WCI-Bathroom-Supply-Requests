@@ -3,7 +3,6 @@
 
 <head>
   <title>Supply Request</title>
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -28,23 +27,20 @@
     }
 
     select,
-    input[type="text"],
+    input,
     button {
       width: 100%;
-      box-sizing: border-box;
-      height: 32px;
-      padding: 6px 10px;
+      padding: 6px;
       margin-top: 4px;
       font-size: 13px;
       border: 1px solid #000;
       border-radius: 0;
       background-color: #fff;
       color: #000;
-      font-family: Arial, sans-serif;
     }
 
     button {
-      margin-top: 12px;
+      margin-top: 10px;
       cursor: pointer;
     }
 
@@ -59,7 +55,6 @@
       background-color: #e0e0e0;
       color: #000;
       font-size: 13px;
-      text-align: center;
     }
   </style>
 </head>
@@ -70,7 +65,7 @@
 
     <h1>Report Supplies</h1>
 
-    <form
+    <form 
       id="form"
       action="https://docs.google.com/forms/d/e/1FAIpQLSc9Ou3HIOlln2gQSxu2yRY2KmMrPynYYKKv4CU7WjEpqfUBzg/formResponse"
       method="POST"
@@ -78,13 +73,9 @@
       onsubmit="return handleSubmit()"
     >
 
+      <!-- Item -->
       <label>Item</label>
-
-      <select
-        id="itemSelect"
-        name="entry.1406252316"
-        onchange="checkOther()"
-      >
+      <select name="entry.1406252316" id="itemSelect" onchange="checkOther()">
         <option value="Soap">Soap</option>
         <option value="Toilet Paper">Toilet Paper</option>
         <option value="Paper Towel">Paper Towel</option>
@@ -93,30 +84,23 @@
         <option value="Other">Other</option>
       </select>
 
-      <input
-        type="text"
-        id="otherItem"
-        placeholder="Type item here"
-      >
+      <!-- Other input -->
+      <input type="text" id="otherItem" placeholder="Type item here">
 
+      <!-- Bathroom -->
       <label>Bathroom Type</label>
-
       <select name="entry.632713553">
         <option value="Male">Male</option>
         <option value="Female">Female</option>
         <option value="Gender Neutral">Gender Neutral</option>
       </select>
 
+      <!-- Location -->
       <label>Location</label>
+      <input type="text" name="entry.1849314937" placeholder="e.g. Floor 1">
 
-      <input
-        type="text"
-        name="entry.1849314937"
-        placeholder="e.g. Floor 1"
-      >
-
+      <!-- Status -->
       <label>Status</label>
-
       <select name="entry.491903196">
         <option value="Out">Out</option>
         <option value="Low">Low</option>
@@ -130,63 +114,35 @@
       Request submitted successfully
     </div>
 
-    <iframe
-      name="hidden_iframe"
-      style="display:none;"
-    ></iframe>
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
 
   </div>
 
   <script>
     function checkOther() {
-
       var select = document.getElementById("itemSelect");
       var otherBox = document.getElementById("otherItem");
-
-      if (select.value === "Other") {
-
-        otherBox.style.display = "block";
-
-        select.name = "";
-        otherBox.name = "entry.1406252316";
-
-      } else {
-
-        otherBox.style.display = "none";
-        otherBox.value = "";
-
-        select.name = "entry.1406252316";
-        otherBox.name = "";
-      }
+      otherBox.style.display = (select.value === "Other") ? "block" : "none";
     }
 
     function handleSubmit() {
-
       var select = document.getElementById("itemSelect");
       var otherBox = document.getElementById("otherItem");
 
       if (select.value === "Other") {
-
         if (otherBox.value.trim() === "") {
           alert("Please type the item name.");
           return false;
         }
+        select.value = otherBox.value;
       }
 
       document.getElementById("successMessage").style.display = "block";
 
-      setTimeout(function () {
-
+      setTimeout(function() {
         document.getElementById("form").reset();
-
         document.getElementById("otherItem").style.display = "none";
-
-        document.getElementById("successMessage").style.display = "none";
-
-        document.getElementById("itemSelect").name = "entry.1406252316";
-        document.getElementById("otherItem").name = "";
-
-      }, 1200);
+      }, 800);
 
       return true;
     }
