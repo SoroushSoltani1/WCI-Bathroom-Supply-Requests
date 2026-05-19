@@ -43,10 +43,6 @@
       font-family: Arial, sans-serif;
     }
 
-    select {
-      appearance: auto;
-    }
-
     button {
       margin-top: 12px;
       cursor: pointer;
@@ -63,6 +59,7 @@
       background-color: #e0e0e0;
       color: #000;
       font-size: 13px;
+      text-align: center;
     }
   </style>
 </head>
@@ -75,7 +72,7 @@
 
     <form
       id="form"
-      action="https://google.com"
+      action="https://docs.google.com/forms/d/e/1FAIpQLSc9Ou3HIOlln2gQSxu2yRY2KmMrPynYYKKv4CU7WjEpqfUBzg/formResponse"
       method="POST"
       target="hidden_iframe"
       onsubmit="return handleSubmit()"
@@ -84,8 +81,8 @@
       <label>Item</label>
 
       <select
-        name="entry.1406252316"
         id="itemSelect"
+        name="entry.1406252316"
         onchange="checkOther()"
       >
         <option value="Soap">Soap</option>
@@ -142,17 +139,29 @@
 
   <script>
     function checkOther() {
+
       var select = document.getElementById("itemSelect");
       var otherBox = document.getElementById("otherItem");
 
       if (select.value === "Other") {
+
         otherBox.style.display = "block";
+
+        select.name = "";
+        otherBox.name = "entry.1406252316";
+
       } else {
+
         otherBox.style.display = "none";
+        otherBox.value = "";
+
+        select.name = "entry.1406252316";
+        otherBox.name = "";
       }
     }
 
     function handleSubmit() {
+
       var select = document.getElementById("itemSelect");
       var otherBox = document.getElementById("otherItem");
 
@@ -162,16 +171,22 @@
           alert("Please type the item name.");
           return false;
         }
-
-        select.value = otherBox.value;
       }
 
       document.getElementById("successMessage").style.display = "block";
 
       setTimeout(function () {
+
         document.getElementById("form").reset();
+
         document.getElementById("otherItem").style.display = "none";
-      }, 800);
+
+        document.getElementById("successMessage").style.display = "none";
+
+        document.getElementById("itemSelect").name = "entry.1406252316";
+        document.getElementById("otherItem").name = "";
+
+      }, 1200);
 
       return true;
     }
