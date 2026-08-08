@@ -1,277 +1,245 @@
-```html
 <!DOCTYPE html>
 <html>
-
 <head>
-  <title>Supply Request</title>
+<title>Supply Request</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  margin: 40px;
+}
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #ffffff;
-      margin: 40px;
-    }
+.container {
+  max-width: 320px;
+  margin: auto;
+}
 
-    .container {
-      max-width: 320px;
-      margin: auto;
-    }
+h1 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
 
-    h1 {
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+}
 
-    label {
-      display: block;
-      margin-top: 10px;
-      font-size: 13px;
-    }
+select,
+input,
+button {
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+  font-size: 13px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background-color: #fff;
+  color: #000;
+  box-sizing: border-box;
+}
 
-    select,
-    input,
-    button {
-      width: 100%;
-      padding: 6px;
-      margin-top: 4px;
-      font-size: 13px;
-      border: 1px solid #000;
-      border-radius: 0;
-      background-color: #fff;
-      color: #000;
-      box-sizing: border-box;
-    }
+button {
+  margin-top: 10px;
+  cursor: pointer;
+}
 
-    button {
-      margin-top: 10px;
-      cursor: pointer;
-    }
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
 
-    #otherItem {
-      display: none;
-    }
+#otherItem {
+  display: none;
+}
 
-    #successMessage {
-      display: none;
-      margin-top: 10px;
-      padding: 6px;
-      background-color: #e0e0e0;
-      color: #000;
-      font-size: 13px;
-    }
+#successMessage {
+  display: none;
+  margin-top: 10px;
+  padding: 6px;
+  background-color: #e0e0e0;
+  color: #000;
+  font-size: 13px;
+}
 
-    #errorMessage {
-      display: none;
-      margin-top: 10px;
-      padding: 6px;
-      background-color: #f4cccc;
-      color: #000;
-      font-size: 13px;
-    }
-  </style>
+#errorMessage {
+  display: none;
+  margin-top: 10px;
+  padding: 6px;
+  background-color: #f4cccc;
+  color: #000;
+  font-size: 13px;
+}
+</style>
 </head>
-
 <body>
 
-  <div class="container">
+<div class="container">
+  <h1>Report Supplies</h1>
 
-    <h1>Report Supplies</h1>
+  <form id="form" onsubmit="return handleSubmit(event)">
+    <!-- Item -->
+    <label>Item</label>
+    <select id="itemSelect" onchange="checkOther()">
+      <option value="">Select item</option>
+      <option value="Soap">Soap</option>
+      <option value="Toilet Paper">Toilet Paper</option>
+      <option value="Paper Towel">Paper Towel</option>
+      <option value="Pads">Pads</option>
+      <option value="Tampons">Tampons</option>
+      <option value="Other">Other</option>
+    </select>
 
-    <form
-      id="form"
-      action="https://docs.google.com/forms/d/e/1FAIpQLSc9Ou3HIOlln2gQSxu2yRY2KmMrPynYYKKv4CU7WjEpqfUBzg/formResponse"
-      method="POST"
-      target="hidden_iframe"
-      onsubmit="return handleSubmit()"
+    <!-- Other Item -->
+    <input
+      type="text"
+      id="otherItem"
+      placeholder="Type item here"
     >
 
-      <!-- Item -->
-      <label>Item</label>
+    <!-- Bathroom -->
+    <label>Bathroom Type</label>
+    <select id="bathroom">
+      <option value="">Select</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Gender neutral">Gender Neutral</option>
+    </select>
 
-      <select
-        name="entry.1406252316"
-        id="itemSelect"
-        onchange="checkOther()"
-      >
-        <option value="">Select item</option>
-        <option value="Soap">Soap</option>
-        <option value="Toilet Paper">Toilet Paper</option>
-        <option value="Paper Towel">Paper Towel</option>
-        <option value="Pads">Pads</option>
-        <option value="Tampons">Tampons</option>
-        <option value="Other">Other</option>
-      </select>
+    <!-- Location -->
+    <label>Location</label>
+    <input
+      type="text"
+      id="location"
+      placeholder="e.g. Floor 1"
+    >
 
-      <!-- Other Item -->
-      <input
-        type="text"
-        id="otherItem"
-        placeholder="Type item here"
-      >
+    <!-- Status -->
+    <label>Status</label>
+    <select id="status">
+      <option value="">Select</option>
+      <option value="Out">Out</option>
+      <option value="Low">Low</option>
+    </select>
 
-      <!-- Bathroom -->
-      <label>Bathroom Type</label>
+    <button type="submit" id="submitBtn">Submit</button>
+  </form>
 
-      <select
-        name="entry.632713553"
-        id="bathroom"
-      >
-        <option value="">Select</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Gender Neutral">Gender Neutral</option>
-      </select>
-
-      <!-- Location -->
-      <label>Location</label>
-
-      <input
-        type="text"
-        name="entry.1849314937"
-        id="location"
-        placeholder="e.g. Floor 1"
-      >
-
-      <!-- Status -->
-      <label>Status</label>
-
-      <select
-        name="entry.491903196"
-        id="status"
-      >
-        <option value="">Select</option>
-        <option value="Out">Out</option>
-        <option value="Low">Low</option>
-      </select>
-
-      <button type="submit">Submit</button>
-
-    </form>
-
-    <div id="successMessage">
-      Request submitted successfully
-    </div>
-
-    <div id="errorMessage"></div>
-
-    <iframe
-      name="hidden_iframe"
-      style="display:none;"
-    ></iframe>
-
+  <div id="successMessage">
+    Request submitted successfully
   </div>
+  <div id="errorMessage"></div>
+</div>
 
-  <script>
+<script>
+// This is the Web App URL from your Apps Script deployment.
+var SCRIPT_URL = "https://script.google.com/a/macros/wrdsb.ca/s/AKfycbwKtGhAlb8VNrGZu20qPzyrWVLJ7m74w8h0ObeiSDslrVORMOHtDS6U_6szMUwoYwZ-/exec";
 
-    function checkOther() {
+function checkOther() {
+  const select = document.getElementById("itemSelect");
+  const other = document.getElementById("otherItem");
 
-      const select = document.getElementById("itemSelect");
-      const other = document.getElementById("otherItem");
+  if (select.value === "Other") {
+    other.style.display = "block";
+  } else {
+    other.style.display = "none";
+    other.value = "";
+  }
+}
 
-      if (select.value === "Other") {
-        other.style.display = "block";
-      } else {
-        other.style.display = "none";
-        other.value = "";
-      }
-    }
+function showError(message) {
+  const error = document.getElementById("errorMessage");
+  error.textContent = message;
+  error.style.display = "block";
+  document.getElementById("successMessage").style.display = "none";
+}
 
+function handleSubmit(event) {
+  event.preventDefault();
 
-    function showError(message) {
+  const itemSelect = document.getElementById("itemSelect");
+  const other = document.getElementById("otherItem");
+  const bathroom = document.getElementById("bathroom");
+  const location = document.getElementById("location");
+  const status = document.getElementById("status");
+  const error = document.getElementById("errorMessage");
+  const success = document.getElementById("successMessage");
+  const submitBtn = document.getElementById("submitBtn");
 
-      const error = document.getElementById("errorMessage");
+  // Hide old messages
+  error.style.display = "none";
+  success.style.display = "none";
 
-      error.textContent = message;
-      error.style.display = "block";
+  // Check item
+  if (itemSelect.value === "") {
+    showError("Please select an item.");
+    return false;
+  }
 
-      document.getElementById("successMessage").style.display = "none";
-    }
+  // Check Other
+  if (itemSelect.value === "Other" && other.value.trim() === "") {
+    showError("Please type the item name.");
+    return false;
+  }
 
+  // Check bathroom
+  if (bathroom.value === "") {
+    showError("Please select a bathroom type.");
+    return false;
+  }
 
-    function handleSubmit() {
+  // Check location
+  if (location.value.trim() === "") {
+    showError("Please enter a location.");
+    return false;
+  }
 
-      const item = document.getElementById("itemSelect");
-      const other = document.getElementById("otherItem");
-      const bathroom = document.getElementById("bathroom");
-      const location = document.getElementById("location");
-      const status = document.getElementById("status");
+  // Check status
+  if (status.value === "") {
+    showError("Please select a status.");
+    return false;
+  }
 
-      const error = document.getElementById("errorMessage");
-      const success = document.getElementById("successMessage");
+  const finalItem = itemSelect.value === "Other" ? other.value.trim() : itemSelect.value;
 
+  const payload = {
+    item: finalItem,
+    bathroom: bathroom.value,
+    location: location.value.trim(),
+    status: status.value
+  };
 
-      // Hide old messages
-      error.style.display = "none";
-      success.style.display = "none";
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
 
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit";
 
-      // Check item
-      if (item.value === "") {
-        showError("Please select an item.");
-        return false;
-      }
-
-
-      // Check Other
-      if (item.value === "Other") {
-
-        if (other.value.trim() === "") {
-          showError("Please type the item name.");
-          return false;
-        }
-
-        /*
-          Google Forms receives the value from the
-          select field, so replace "Other" with
-          the text the user entered.
-        */
-        item.value = other.value.trim();
-      }
-
-
-      // Check bathroom
-      if (bathroom.value === "") {
-        showError("Please select a bathroom type.");
-        return false;
-      }
-
-
-      // Check location
-      if (location.value.trim() === "") {
-        showError("Please enter a location.");
-        return false;
-      }
-
-
-      // Check status
-      if (status.value === "") {
-        showError("Please select a status.");
-        return false;
-      }
-
-
-      /*
-        Everything is valid.
-
-        Returning true allows the form's normal
-        POST request to Google Forms to happen.
-      */
-      success.style.display = "block";
-
-      setTimeout(function() {
-
+      if (data.result === "success") {
+        success.style.display = "block";
         document.getElementById("form").reset();
-
         other.style.display = "none";
+      } else {
+        showError("Something went wrong. Please try again.");
+      }
+    })
+    .catch(function () {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit";
+      showError("Could not reach the server. Please check your connection and try again.");
+    });
 
-      }, 800);
-
-      return true;
-    }
-
-  </script>
+  return false;
+}
+</script>
 
 </body>
-
 </html>
-```
