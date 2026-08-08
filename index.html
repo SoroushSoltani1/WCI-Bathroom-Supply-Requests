@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Supply Request</title>
 <style>
 body {
@@ -12,6 +14,15 @@ body {
 .container {
   max-width: 320px;
   margin: auto;
+}
+
+@media (max-width: 480px) {
+  body {
+    margin: 20px 16px;
+  }
+  .container {
+    max-width: 100%;
+  }
 }
 
 h1 {
@@ -29,9 +40,9 @@ select,
 input,
 button {
   width: 100%;
-  padding: 6px;
+  padding: 10px 6px;
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 16px;
   border: 1px solid #000;
   border-radius: 0;
   background-color: #fff;
