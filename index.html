@@ -231,10 +231,10 @@ function handleSubmit(event) {
         showError("Something went wrong. Please try again.");
       }
     })
-    .catch(function () {
+    .catch(function (err) {
       submitBtn.disabled = false;
       submitBtn.textContent = "Submit";
-      showError("Could not reach the server. Please check your connection and try again.");
+      showError("Error: " + err.message);
     });
 
   return false;
