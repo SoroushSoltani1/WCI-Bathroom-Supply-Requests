@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 
@@ -55,6 +56,16 @@
       margin-top: 10px;
       padding: 6px;
       background-color: #e0e0e0;
+      color: #000;
+      font-size: 13px;
+    }
+
+    #errorMessage {
+      display: none;
+      margin-top: 10px;
+      padding: 6px;
+      background-color: #f4cccc;
+      color: #000;
       font-size: 13px;
     }
   </style>
@@ -62,127 +73,205 @@
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <h1>Report Supplies</h1>
+    <h1>Report Supplies</h1>
 
-  <form 
-    id="form"
-    action="https://docs.google.com/forms/d/e/1FAIpQLSc9Ou3HIOlln2gQSxu2yRY2KmMrPynYYKKv4CU7WjEpqfUBzg/viewform"
-    method="POST"
-    target="hidden_iframe"
-    onsubmit="return handleSubmit()"
-  >
+    <form
+      id="form"
+      action="https://docs.google.com/forms/d/e/1FAIpQLSc9Ou3HIOlln2gQSxu2yRY2KmMrPynYYKKv4CU7WjEpqfUBzg/formResponse"
+      method="POST"
+      target="hidden_iframe"
+      onsubmit="return handleSubmit()"
+    >
 
-    <!-- Item -->
-    <label>Item</label>
-    <select name="entry.1406252316" id="itemSelect" onchange="checkOther()">
-      <option value="">Select item</option>
-      <option value="Soap">Soap</option>
-      <option value="Toilet Paper">Toilet Paper</option>
-      <option value="Paper Towel">Paper Towel</option>
-      <option value="Pads">Pads</option>
-      <option value="Tampons">Tampons</option>
-      <option value="Other">Other</option>
-    </select>
+      <!-- Item -->
+      <label>Item</label>
 
-    <!-- Other -->
-    <input type="text" id="otherItem" placeholder="Type item here">
+      <select
+        name="entry.1406252316"
+        id="itemSelect"
+        onchange="checkOther()"
+      >
+        <option value="">Select item</option>
+        <option value="Soap">Soap</option>
+        <option value="Toilet Paper">Toilet Paper</option>
+        <option value="Paper Towel">Paper Towel</option>
+        <option value="Pads">Pads</option>
+        <option value="Tampons">Tampons</option>
+        <option value="Other">Other</option>
+      </select>
 
-    <!-- Bathroom -->
-    <label>Bathroom Type</label>
-    <select name="entry.632713553" id="bathroom">
-      <option value="">Select</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="Gender Neutral">Gender Neutral</option>
-    </select>
+      <!-- Other Item -->
+      <input
+        type="text"
+        id="otherItem"
+        placeholder="Type item here"
+      >
 
-    <!-- Location -->
-    <label>Location</label>
-    <input type="text" name="entry.1849314937" id="location" placeholder="e.g. Floor 1">
+      <!-- Bathroom -->
+      <label>Bathroom Type</label>
 
-    <!-- Status -->
-    <label>Status</label>
-    <select name="entry.491903196" id="status">
-      <option value="">Select</option>
-      <option value="Out">Out</option>
-      <option value="Low">Low</option>
-    </select>
+      <select
+        name="entry.632713553"
+        id="bathroom"
+      >
+        <option value="">Select</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Gender Neutral">Gender Neutral</option>
+      </select>
 
-    <button type="submit">Submit</button>
+      <!-- Location -->
+      <label>Location</label>
 
-  </form>
+      <input
+        type="text"
+        name="entry.1849314937"
+        id="location"
+        placeholder="e.g. Floor 1"
+      >
 
-  <div id="successMessage">Request submitted successfully</div>
+      <!-- Status -->
+      <label>Status</label>
 
-  <iframe name="hidden_iframe" style="display:none;"></iframe>
+      <select
+        name="entry.491903196"
+        id="status"
+      >
+        <option value="">Select</option>
+        <option value="Out">Out</option>
+        <option value="Low">Low</option>
+      </select>
 
-</div>
+      <button type="submit">Submit</button>
 
-<script>
-  function checkOther() {
-    const select = document.getElementById("itemSelect");
-    const other = document.getElementById("otherItem");
+    </form>
 
-    if (select.value === "Other") {
-      other.style.display = "block";
-    } else {
-      other.style.display = "none";
+    <div id="successMessage">
+      Request submitted successfully
+    </div>
+
+    <div id="errorMessage"></div>
+
+    <iframe
+      name="hidden_iframe"
+      style="display:none;"
+    ></iframe>
+
+  </div>
+
+  <script>
+
+    function checkOther() {
+
+      const select = document.getElementById("itemSelect");
+      const other = document.getElementById("otherItem");
+
+      if (select.value === "Other") {
+        other.style.display = "block";
+      } else {
+        other.style.display = "none";
+        other.value = "";
+      }
     }
-  }
 
-  function handleSubmit() {
-    const item = document.getElementById("itemSelect");
-    const other = document.getElementById("otherItem");
-    const bathroom = document.getElementById("bathroom");
-    const location = document.getElementById("location");
-    const status = document.getElementById("status");
 
-    // ITEM check
-    if (!item.value) {
-      alert("Please select an item.");
-      return false;
+    function showError(message) {
+
+      const error = document.getElementById("errorMessage");
+
+      error.textContent = message;
+      error.style.display = "block";
+
+      document.getElementById("successMessage").style.display = "none";
     }
 
-    // OTHER check
-    if (item.value === "Other") {
-      if (other.value.trim() === "") {
-        alert("Please type the item name.");
+
+    function handleSubmit() {
+
+      const item = document.getElementById("itemSelect");
+      const other = document.getElementById("otherItem");
+      const bathroom = document.getElementById("bathroom");
+      const location = document.getElementById("location");
+      const status = document.getElementById("status");
+
+      const error = document.getElementById("errorMessage");
+      const success = document.getElementById("successMessage");
+
+
+      // Hide old messages
+      error.style.display = "none";
+      success.style.display = "none";
+
+
+      // Check item
+      if (item.value === "") {
+        showError("Please select an item.");
         return false;
       }
-      item.value = other.value;
+
+
+      // Check Other
+      if (item.value === "Other") {
+
+        if (other.value.trim() === "") {
+          showError("Please type the item name.");
+          return false;
+        }
+
+        /*
+          Google Forms receives the value from the
+          select field, so replace "Other" with
+          the text the user entered.
+        */
+        item.value = other.value.trim();
+      }
+
+
+      // Check bathroom
+      if (bathroom.value === "") {
+        showError("Please select a bathroom type.");
+        return false;
+      }
+
+
+      // Check location
+      if (location.value.trim() === "") {
+        showError("Please enter a location.");
+        return false;
+      }
+
+
+      // Check status
+      if (status.value === "") {
+        showError("Please select a status.");
+        return false;
+      }
+
+
+      /*
+        Everything is valid.
+
+        Returning true allows the form's normal
+        POST request to Google Forms to happen.
+      */
+      success.style.display = "block";
+
+      setTimeout(function() {
+
+        document.getElementById("form").reset();
+
+        other.style.display = "none";
+
+      }, 800);
+
+      return true;
     }
 
-    // BATHROOM check
-    if (!bathroom.value) {
-      alert("Please select bathroom type.");
-      return false;
-    }
-
-    // LOCATION check
-    if (location.value.trim() === "") {
-      alert("Please enter a location.");
-      return false;
-    }
-
-    // STATUS check
-    if (!status.value) {
-      alert("Please select status.");
-      return false;
-    }
-
-    // SUCCESS
-    document.getElementById("successMessage").style.display = "block";
-
-    setTimeout(() => {
-      document.getElementById("form").reset();
-      document.getElementById("otherItem").style.display = "none";
-    }, 800);
-
-    return true;
-  }
-</script>
+  </script>
 
 </body>
+
 </html>
+```
